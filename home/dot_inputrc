@@ -1,0 +1,16 @@
+set colored-stats on
+set colored-completion-prefix on
+set bind-tty-special-chars off
+
+"\C-k": kill-line
+"\C-u": unix-line-discard
+
+"\C-f": shell-forward-word
+"\C-b": shell-backward-word
+"\C-d": shell-kill-word
+"\C-w": shell-backward-kill-word
+
+"\ef": forward-word
+"\eb": backward-word
+"\ed": kill-word
+"\ew": backward-kill-word

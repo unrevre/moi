@@ -1,0 +1,12 @@
+{{- if not (hasKey . "name") -}}
+{{- fail "missing data.name in ~/.config/chezmoi/chezmoi.yaml" -}}
+{{- end -}}
+{{- if not (hasKey . "email") -}}
+{{- fail "missing data.email in ~/.config/chezmoi/chezmoi.yaml" -}}
+{{- end -}}
+{{- if not (hasKey . "theme") -}}
+{{- fail "missing data.theme in ~/.config/chezmoi/chezmoi.yaml" -}}
+{{- end -}}
+{{- if not (hasKey . "tags") -}}
+{{- fail "missing data.tags in ~/.config/chezmoi/chezmoi.yaml" -}}
+{{- end -}}

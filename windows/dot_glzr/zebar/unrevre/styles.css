@@ -1,0 +1,152 @@
+/**
+ * Import the Nerdfonts icon font.
+ * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
+ */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+i {
+  font-size: 12px;
+  margin-right: 0px;
+}
+
+body {
+  color: rgb(255 255 255 / 90%);
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  background: linear-gradient(rgb(0 0 0 / 90%), rgb(8 8 8 / 90%));
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-family: Cascadia Mono, monospace;
+  font-size: 10px;
+  height: 100%;
+  padding: 4px 1.5vw;
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+}
+
+.left,
+.center,
+.right {
+  align-items: center;
+}
+
+.center {
+  justify-self: center;
+  text-overflow: ellipsis;
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo {
+  color: #0880d8;
+  font-size: 15px;
+  margin-right: 16px;
+}
+
+.binding-mode,
+.tiling-direction {
+  margin-right: 8px;
+}
+
+.memory,
+.cpu,
+.battery,
+.weather {
+  width: 54px;
+  border: 0px;
+  text-align: right;
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+}
+
+.workspace {
+  background: rgb(255 255 255 / 16%);
+  margin-right: 4px;
+  padding: 4px;
+  color: rgb(255 255 255 / 90%);
+  border: none;
+  border-radius: 2px;
+
+  &.displayed {
+    background: rgb(255 255 255 / 16%);
+  }
+
+  &.focused,
+  &:hover {
+    background: #0880d8;
+  }
+}
+
+.binding-mode,
+.tiling-direction {
+  background: rgb(255 255 255 / 16%);
+  color: rgb(255 255 255 / 90%);
+  border-radius: 2px;
+  line-height: 1;
+  padding: 4px;
+  border: 0;
+}
+
+/* CPU/RAM usage levels */
+.critical-usage {
+  color: #f38ba8;
+}
+
+.high-usage {
+  color: #faa973;
+}
+
+.medium-usage {
+  color: #f9e2af;
+}
+
+.low-usage {
+  color: #a6e3a1;
+}
+
+/* Temperature levels */
+.heat {
+  color: #f38ba8;
+}
+
+.hot {
+  color: #faa973;
+}
+
+.warm {
+  color: #f9e2af;
+}
+
+.normal {
+  color: #a6e3a1;
+}
+
+.cool {
+  color: #89b4fa;
+}
+
+.cold {
+  color: #9999cc;
+}

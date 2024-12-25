@@ -1,0 +1,79 @@
+{
+    "remote.SSH.enableX11Forwarding": false,
+    "remote.SSH.remotePlatform": {
+        "gcr-445": "linux",
+        "gcr-4024": "linux",
+        "lightaimd": "linux",
+        "protein-msa": "linux"
+    },
+    "remote.SSH.path": "C:\\Users\\biran\\.ssh\\ssh-vscode.bat",
+    "editor.cursorStyle": "block",
+    "editor.fontSize": 10,
+    "editor.semanticHighlighting.enabled": true,
+    "git.openRepositoryInParentFolders": "always",
+    "github.gitProtocol": "ssh",
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    "task.quickOpen.history": 24,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.drawBoldTextInBrightColors": false,
+    "terminal.integrated.defaultProfile.windows": "Arch (WSL)",
+    "terminal.integrated.environmentChangesRelaunch": false,
+    "terminal.integrated.fontSize": 10,
+    "terminal.integrated.initialHint": false,
+    "terminal.integrated.minimumContrastRatio": 1,
+    "terminal.integrated.rightClickBehavior": "paste",
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.stickyScroll.enabled": true,
+    "terminal.integrated.stickyScroll.maxLineCount": 2,
+    "terminal.integrated.tabs.separator": " \\ ",
+    "workbench.colorTheme": "Catppuccin Latte",
+    "workbench.iconTheme": "catppuccin-latte",
+    "workbench.colorCustomizations": {
+        "terminal.ansiBlack": "#2d2d2d",
+        "terminal.ansiBlue": "#89b4fa",
+        "terminal.ansiBrightBlack": "#393939",
+        "terminal.ansiBrightBlue": "#747369",
+        "terminal.ansiBrightCyan": "#d3d0c8",
+        "terminal.ansiBrightGreen": "#b9e677",
+        "terminal.ansiBrightMagenta": "#a09f93",
+        "terminal.ansiBrightRed": "#515151",
+        "terminal.ansiBrightWhite": "#e8e6df",
+        "terminal.ansiBrightYellow": "#faa973",
+        "terminal.ansiCyan": "#a0cfff",
+        "terminal.ansiGreen": "#a6e3a1",
+        "terminal.ansiMagenta": "#9999cc",
+        "terminal.ansiRed": "#f38ba8",
+        "terminal.ansiWhite": "#f2f0ec",
+        "terminal.ansiYellow": "#f9e2af",
+        "terminal.background": "#0f0f0f",
+        "terminal.foreground": "#e8e6df",
+        "terminal.selectionBackground": "#515151"
+    },
+    "window.titleBarStyle": "custom",
+    "catppuccin.accentColor": "lavender",
+    "catppuccin.bracketMode": "dimmed",
+    "catppuccin.colorOverrides": {
+        "mocha": {
+            "base": "#0f0f0f",
+            "mantle": "#121212",
+            "crust": "#161616"
+        }
+    },
+    "catppuccin.customUIColors": {
+        "mocha": {
+            "statusBar.foreground": "accent"
+        }
+    },
+    "catppuccin.italicComments": true,
+    "editor.fontFamily": "'Cascadia Mono', monospace",
+    "files.exclude": {
+        "**/.sw*": true
+    },
+    "files.watcherExclude": {
+        "**/.sw*": true
+    },
+    "security.workspace.trust.untrustedFiles": "open"
+}

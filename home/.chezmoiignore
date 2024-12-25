@@ -10,3 +10,8 @@
 {{- if not (hasKey . "tags") -}}
 {{- fail "missing data.tags in ~/.config/chezmoi/chezmoi.yaml" -}}
 {{- end -}}
+
+{{- if not (has "azure" .tags) }}
+azure/
+.config/bash/azure.sh
+{{- end }}

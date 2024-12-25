@@ -66,7 +66,9 @@ completions=(
     /usr/share/bash-completion/completions/mosh
     /usr/share/bash-completion/completions/pacman
     /usr/share/bash-completion/completions/pip
+{{- if has "conda" .tags }}
     "$HOME/.local/share/bash-completion/completions/conda"
+{{- end }}
 )
 
 # shellcheck source=/dev/null
@@ -127,7 +129,9 @@ _get_git_branch() {
 }
 
 _get_environment() {
+{{- if has "conda" .tags }}
     [[ -n "$CONDA_DEFAULT_ENV" ]] && echo " (${CONDA_DEFAULT_ENV})"
+{{- end }}
     [[ -n "$VIRTUAL_ENV" ]] && echo " (${VIRTUAL_ENV##*/})"
 }
 

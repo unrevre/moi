@@ -1,0 +1,5 @@
+{{- if not (contains "work" .machine) }}
+azure/
+.config/bash/azure.sh
+.local/share/bash-completion/completions/az-pim
+{{- end }}

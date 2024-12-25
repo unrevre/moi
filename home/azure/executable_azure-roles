@@ -1,0 +1,405 @@
+#!/usr/bin/env bash
+
+_prompt=$'\001\033[38;5;6m\002'
+_reset=$'\001\033[0m\002'
+
+function _emit_message() {
+    local level message _prefix
+
+    level="$1"
+    message="$2"
+
+    case "${level}" in
+        v)  _prefix="\033[38;5;3m [v]" ;;
+        i)  _prefix="\033[38;5;3m [i]" ;;
+        w)  _prefix="\033[38;5;11m [w]" ;;
+        !)  _prefix="\033[38;5;1m [!]" ;;
+        *)  _prefix="" ;;
+    esac
+
+    if [ "${level}" != "v" ] || [ -n "${verbose}" ]; then
+        echo -e "${_prefix} ${message}\033[0m" > /dev/tty
+    fi
+}
+
+function _marshal_email_format() {
+    local input values count
+
+    input="$1"
+
+    IFS=' ' read -ra values <<< "${input}"
+    count=${#values[@]}
+    if [ "${count}" -gt 1 ]; then
+        _emit_message v "invalid email format; retry as group name"
+        return 1
+    fi
+
+    IFS='@' read -ra values <<< "${input}"
+    count=${#values[@]}
+    if [ -z "${count}" ] || [ "${count}" -gt 2 ]; then
+        _emit_message ! "invalid user format"
+        return 1
+    fi
+
+    if [ "${count}" -eq 2 ] && [ "${values[1]}" != "microsoft.com" ]; then
+        _emit_message w "non-standard domain; converting to @microsoft.com"
+    fi
+
+    email=${values[0]}@microsoft.com
+}
+
+function _query_user_by_email() {
+    local input info
+
+    input="$1"
+
+    mapfile -t info <<< "$(az ad user show --id "${input}" --query "[id, displayName]" --output tsv)"
+    if [ ${#info[@]} -ne 2 ]; then
+        return 1
+    fi
+
+    uinfo=("${input}" "${info[1]}" "${info[0]}")
+}
+
+function _query_group_by_name() {
+    local input
+
+    input="$1"
+
+    grpid=$(az ad group show --group "${input}" --query id --output tsv)
+
+    uinfo=("${input}" "group" "${grpid}")
+}
+
+function _query_id_as_user() {
+    local input
+
+    input="$1"
+
+    if ! _marshal_email_format "${input}"; then
+        return 1
+    fi
+
+    if ! _query_user_by_email "${email}"; then
+        return 1
+    fi
+}
+
+function _query_id_as_group() {
+    local input
+
+    input="$1"
+
+    _query_group_by_name "${input}"
+}
+
+function _sanitise_id() {
+    local input
+
+    input="$1"
+
+    if [ -n "${rawid}" ]; then
+        uinfo=("${input}" "managed identity" "${input}")
+    else
+        if ! _query_id_as_user "${input}" && ! _query_id_as_group "${input}"; then
+            return 1
+        fi
+    fi
+
+    _alias+=("${uinfo[0]}")
+    _dname+=("${uinfo[1]}")
+    _objid+=("${uinfo[2]}")
+}
+
+function _validate_role() {
+    local input roles
+
+    input="$1"
+
+    roles=$(az role definition list --query '[].roleName' --output tsv)
+    match=$(grep -E '^'"${input}"'$' <<< "${roles}")
+
+    [ -n "${match}" ]
+}
+
+function _fzf_select_role() {
+    local input roles
+
+    input="$1"
+    roles="$2"
+
+    match=$(fzf -q "${input}" <<< "${roles}")
+
+    [ -n "${match}" ]
+}
+
+function _sanitise_role() {
+    local input
+
+    input="$1"
+
+    if ! _validate_role "${input}"; then
+        if [ -n "${batch}" ]; then
+            return 1
+        fi
+
+        if ! _fzf_select_role "${input}" "${roles}"; then
+            return 1
+        fi
+    fi
+
+    _roles+=("${match}")
+}
+
+function _query_resource_group() {
+    local value query
+
+    value="$1"
+
+    if [ -n "${batch}" ]; then
+        _emit_message v "require exact match in batch mode"
+        query="name == '""${value}""'"
+    else
+        query="contains(name, '""${value}""')"
+    fi
+    output=$(az group list --query "[? $query].{name:name, objid:id}" --output table | tail -n +3)
+}
+
+function _select_entry_from_list() {
+    local list count line entry
+
+    list="$1"
+
+    count=0
+    while IFS= read -r line; do
+        printf '%4d:\t%s\n' "${count}" "${line}" > /dev/tty
+        count=$((count+1))
+    done <<< "${list}"
+
+    if [ -n "${batch}" ]; then
+        return 1
+    fi
+
+    while true; do
+        read -erp "${_prompt} > select entry ([q] to exit): ${_reset}" entry
+        if [[ "${entry}" == "q" ]]; then
+            return 1
+        fi
+        if [ "${entry}" -lt "${count}" ]; then
+            choice=$(head -n $((entry+1)) <<< "${list}" | tail -1)
+            return 0
+        fi
+    done
+}
+
+function _select_subscription() {
+    local subscription
+
+    output=$(az account list --query "[].{name:name, objid:id}" --output table | tail -n +3)
+    if ! _select_entry_from_list "${output}"; then
+        return 1
+    fi
+
+    subscription=$(awk '{print $1}' <<< "${choice}")
+    _emit_message v "set subscription to ${subscription}"
+    az account set --subscription "${subscription}"
+}
+
+function _query_resource_group_across_subscriptions() {
+    local input subscription
+
+    input="$1"
+
+    while true; do
+        _query_resource_group "${input}"
+        if [ -n "${output}" ]; then
+            break
+        fi
+
+        subscription=$(az account list --query "[?isDefault].name" --output tsv)
+        _emit_message i "no matches found in subscription: ${subscription}"
+        if ! _select_subscription; then
+            return 1
+        fi
+    done
+}
+
+function _validate_scope_format() {
+    local values
+
+    values=("$@")
+
+    [[ "${values[1]}" == "subscriptions" && ( "${values[3]}" == "resourcegroups" || "${values[3]}" == "resourceGroups" ) ]]
+}
+
+function _marshal_scope_format() {
+    local input values count subscription
+
+    input="$1"
+
+    IFS='/' read -ra values <<< "${input}"
+    count=${#values[@]}
+    if [ -z "${count}" ]; then
+        _emit_message ! "empty scope"
+        return 1
+    fi
+
+    if [ "${count}" -eq 1 ]; then
+        _query_resource_group_across_subscriptions "${input}"
+        return $?
+    fi
+
+    if [ "${count}" -ge 5 ]; then
+        if ! _validate_scope_format "${values[@]}"; then
+            _emit_message ! "invalid scope"
+            return 1
+        fi
+
+        _emit_message v "found subscription in scope argument"
+        subscription=$(az account list --query "[?isDefault].id" --output tsv)
+        if [ "${subscription}" != "${values[2]}" ]; then
+            _emit_message v "set subscription to ${values[2]}"
+            az account set --subscription "${values[2]}"
+        fi
+
+        _query_resource_group "${values[4]}"
+        if [ -z "${output}" ]; then
+            _emit_message ! "invalid resource-group: ${values[4]}"
+            return 1
+        fi
+
+        if [ "${count}" -gt 5 ]; then
+            output="${values[-1]} ${input}"
+        fi
+
+        return 0
+    fi
+
+    _emit_message ! "invalid scope"
+    return 1
+}
+
+function _sanitise_scope() {
+    local input
+
+    input="$1"
+
+    if ! _marshal_scope_format "${input}"; then
+        return 1
+    fi
+
+    if [ "$(wc -l <<< "${output}")" -gt 1 ]; then
+        _emit_message w "multiple matches found"
+
+        if ! _select_entry_from_list "${output}"; then
+            return 1
+        fi
+
+        output="${choice}"
+    fi
+
+    _scope+=$(awk '{print $2}' <<< "${output}")
+}
+
+function _iterate_values() {
+    local func values
+
+    func="$1"
+    values=("${@:2}")
+
+    for value in "${values[@]}"; do
+        ${func} "${value}"
+    done
+}
+
+function _help() {
+    echo " usage: azure-roles -a [alias] -r [role] -s [scope]"
+    echo "   -h, --help:    display (this) help message"
+    echo "   -b, --batch:   batch mode, non-interactive"
+    echo "   --confirm:     execute commands"
+    echo "   --verbose:     verbose output"
+    echo
+}
+
+ARGS=()
+
+# init arrays
+alias=()
+role=()
+scope=()
+
+# sanitised values
+_alias=()
+_dname=()
+_objid=()
+_roles=()
+_scope=()
+
+# set defaults
+prefix="echo"
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)      _help; exit 0 ;;
+        -a|--alias)     alias=("${alias[@]}" "$2"); shift 2 ;;
+        -b|--batch)     batch=true; shift ;;
+        -i|--rawid)     rawid=true; shift ;;
+        -r|--role)      role=("${role[@]}" "$2"); shift 2 ;;
+        --role=*)       role=("${role[@]}" "${1#*=}"); shift ;;
+        -s|--scope)     scope=("${scope[@]}" "$2"); shift 2 ;;
+        --scope=*)      scope=("${scope[@]}" "${1#*=}"); shift ;;
+        --confirm)      prefix=""; shift ;;
+        -v|--verbose)   verbose=true; shift ;;
+        -*)             echo -e "invalid option: $1\n"; exit 1 ;;
+        *)              ARGS+=("$1"); shift ;;
+    esac
+done
+
+set -- "${ARGS[@]}"
+
+[ $# -gt 0 ] && { _help; exit 1; }
+
+if [ -n "${prefix}" ]; then
+    _emit_message i "echo-ing az-cli command"
+fi
+
+_iterate_values _sanitise_id "${alias[@]}"
+_iterate_values _sanitise_role "${role[@]}"
+_iterate_values _sanitise_scope "${scope[@]}"
+
+if [ ${#_alias[@]} -eq 0 ]; then
+    _emit_message ! "no valid aliases"
+    exit 1
+fi
+if [ ${#_roles[@]} -eq 0 ]; then
+    _emit_message ! "no valid roles"
+    exit 1
+fi
+if [ ${#_scope[@]} -eq 0 ]; then
+    _emit_message ! "no valid scopes"
+    exit 1
+fi
+
+for i in "${!_alias[@]}"; do
+    for j in "${!_roles[@]}"; do
+        for k in "${!_scope[@]}"; do
+            echo
+            echo -e "\033[38;5;2m + user:  ${_alias[i]} [${_dname[i]}]\033[0m"
+            echo -e "\033[38;5;2m + role:  ${_roles[j]}\033[0m"
+            echo -e "\033[38;5;2m + scope: ${_scope[k]}\033[0m"
+
+            if [ -z "${batch}" ] && [ -z "${prefix}" ]; then
+                read -ersp "${_prompt} > confirm assignment [y/n]: ${_reset}" -n1 key
+                echo
+
+                if [ "${key}" == "n" ]; then
+                    continue
+                fi
+            fi
+
+            $prefix az role assignment create --assignee "${_objid[i]}" --role "${_roles[j]}" --scope "${_scope[k]}"
+        done
+    done
+done
+
+echo

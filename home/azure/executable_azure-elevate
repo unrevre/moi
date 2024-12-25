@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+function _add_query_for_key() {
+    key="$1"
+    value="$2"
+
+    exact_selection=".${key} == \"${value}\""
+    fuzzy_selection=".${key} | contains(\"${value}\")"
+    match_selection="${match}_selection"
+    selection="${!match_selection}"
+
+    cmd="${cmd} | jq 'map(select(${selection}))'"
+}
+
+function _help() {
+    echo " usage: azure-elevate [-f] -r [role] -s [scope] [justification]"
+    echo "    --all: activate all eligible roles"
+    echo "    --role: select all roles that match"
+    echo "    --scope: select all scopes that match"
+    echo "    --fuzzy: non-exact match"
+}
+
+ARGS=()
+
+# set defaults
+match=exact
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)      _help; exit 0 ;;
+        --all)          all=true; shift ;;
+        --confirm)      execute=true; shift ;;
+        -f|--fuzzy)     match=fuzzy; shift ;;
+        -r|--role)      role="$2"; shift 2 ;;
+        --role=*)       role="${1#*=}"; shift ;;
+        -s|--scope)     scope="$2"; shift 2 ;;
+        --scope=*)      scope="${1#*=}"; shift ;;
+        -v|--verbose)   verbose=true; shift ;;
+        -*)             echo -e "invalid option: $1\n"; exit 1 ;;
+        *)              ARGS+=("$1"); shift ;;
+    esac
+done
+
+set -- "${ARGS[@]}"
+
+[[ $# -ne 1 ]] && { _help; exit 1; }
+
+justification="$1"
+cmd="az-pim list"
+
+[ -z "${execute}" ] && echo -e "\033[38;5;3m [i] display role info\033[0m"
+[ "${match}" == "fuzzy" ] && echo -e "\033[38;5;3m [i] fuzzy match\033[0m"
+
+if [ -z "${all}" ]; then
+    if [ -z "${role}" ] && [ -z "${scope}" ]; then
+        echo -e "\033[38;5;1m [!] either role or scope must be specified\033[0m"
+        exit 1
+    fi
+
+    [ -n "${role}" ] && _add_query_for_key role "${role}"
+    [ -n "${scope}" ] && _add_query_for_key scope_name "${scope}"
+else
+    if [ -n "${role}" ] || [ -n "${scope}" ]; then
+        echo -e "\033[38;5;2m [i] ignoring role/scope (--all)\033[0m"
+    fi
+fi
+
+echo
+
+if [ -n "${execute}" ]; then
+    cmd="${cmd} | az-pim activate-set \"${justification}\" --config /dev/stdin"
+    [ -n "${verbose}" ] && cmd="${cmd} --verbose"
+fi
+
+eval "${cmd}"

@@ -1,0 +1,4 @@
+{{- if not (contains "azure" .machine) }}
+azure/
+.config/bash/azure.sh
+{{- end }}

@@ -71,7 +71,9 @@ completions=(
     /usr/share/bash-completion/completions/pacman
     /usr/share/bash-completion/completions/pip
     /usr/share/bash-completion/completions/pyenv
+{{- if contains "work" .machine }}
     "$HOME/.local/share/bash-completion/completions/conda"
+{{- end }}
 )
 
 # shellcheck source=/dev/null
@@ -132,7 +134,9 @@ _get_git_branch() {
 }
 
 _get_environment() {
+{{- if contains "work" .machine }}
     [[ -n "$CONDA_DEFAULT_ENV" ]] && echo " (${CONDA_DEFAULT_ENV})"
+{{- end }}
     [[ -n "$VIRTUAL_ENV" ]] && echo " (${VIRTUAL_ENV##*/})"
 }
 

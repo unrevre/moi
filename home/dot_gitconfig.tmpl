@@ -62,3 +62,11 @@
 	tool = vim
 [mergetool "vim"]
 	cmd = vim -f -d -c \"4wincmd w | wincmd J\" \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+{{- if contains "work-remote" .machine }}
+[credential]
+	helper =
+	helper = /home/biran/.local/bin/git-credential-manager
+	azreposCredentialType = oauth
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+{{- end }}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+{{- if eq .chezmoi.os "linux" }}
+{{- if contains "work" .machine }}
+
+conda config --set auto_activate_base false
+conda config --set changeps1 False
+{{- end }}
+{{- end }}

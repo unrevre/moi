@@ -4,6 +4,7 @@
 .local/bin/git-jump:
   type: file
   url: 'https://raw.githubusercontent.com/git/git/refs/heads/master/contrib/git-jump/git-jump'
+  executable: true
 .local/share/bash-completion/completions/conda:
   type: file
   url: 'https://raw.githubusercontent.com/tartansandal/conda-bash-completion/refs/heads/master/conda'

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.local/bin/
+{{- if eq .chezmoi.os "linux" }}
+{{- if contains "arch" .flavour }}
+
+sudo pacman -S mosh fzf
+{{- if contains "work" .machine }}
+
+sudo pacman -S azure-cli azcopy
+{{- end }}
+{{- end }}
+{{- if contains "ubuntu" .flavour }}
+
+# install mosh
+sudo apt install -y mosh
+
+# install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
+bash /tmp/fzf/install --bin --no-update-rc
+cp /tmp/fzf/bin/fzf ~/.local/bin/
+{{- if contains "work" .machine }}
+
+# install azure-cli
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# install azcopy
+wget 'https://aka.ms/downloadazcopy-v10-linux' -O /tmp/azcopy.tar.gz
+tar -xf /tmp/azcopy.tar.gz -C ~/.local/bin
+{{- if contains "remote" .machine }}
+
+# install blobfuse
+sudo apt install -y blobfuse2 libfuse2
+
+# install and update restic
+sudo apt install -y restic
+sudo restic self-update
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if contains "work" .machine }}
+
+# install conda/mamba (miniforge)
+_CM_CONDA_URL=https://github.com/conda-forge/miniforge
+curl -fLsSo /tmp/conda.sh "${_CM_CONDA_URL}/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash /tmp/conda.sh -b -p "${HOME}/conda"
+{{- end }}
+{{- end }}

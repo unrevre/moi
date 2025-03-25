@@ -66,3 +66,6 @@
 .vim/bundle/vim-vinegar:
   type: git-repo
   url: 'git@github.com:unrevre/vim-vinegar.git'
+.vim/bundle/vimwiki:
+  type: git-repo
+  url: 'git@github.com:vimwiki/vimwiki.git'

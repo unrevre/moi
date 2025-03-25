@@ -251,3 +251,16 @@ augroup fzf_buffers
   autocmd BufWinEnter,WinEnter * let g:fzf_buffers[bufnr('')] = reltimefloat(reltime())
   autocmd BufDelete * silent! call remove(g:fzf_buffers, expand('<abuf>'))
 augroup END
+
+function! plugins#complete(...)
+  return join(['matchup'], "\n")
+endfunction
+
+function! plugins#toggle(name)
+  if a:name == 'matchup'
+    let state = get(g:, 'matchup_enabled', 1)
+    let g:matchup_enabled = !state
+    return
+  endif
+
+endfunction

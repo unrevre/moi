@@ -56,6 +56,10 @@ eval "$(fzf --bash)"
 
 # shellcheck source=/dev/null
 for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
+{{- if has "conda" .tags }}
+
+source "${HOME}/conda/etc/profile.d/conda.sh"
+{{- end }}
 
 completions=(
 {{- if has "azure" .tags }}

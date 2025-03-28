@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+hc() { "${herbstclient_command[@]:-herbstclient}" "$@"; }
+
+monitor=${1:-0}
+IFS=" " read -ra geometry <<< "$(hc monitor_rect "$monitor")"
+[ -z ${#geometry[@]} ] && { echo "invalid monitor"; exit 1; }
+
+# geometry has the format X Y W H
+x=${geometry[0]}
+y=${geometry[1]}
+width=${geometry[2]}
+height=20
+
+font="-misc-tamzen-medium-r-normal--15-*-*-*-*-*-iso8859-1"
+
+hc pad "$monitor" "$height"
+
+# shellcheck disable=SC2120
+uniq_linebuffered() {
+    awk '$0 != l { print; l=$0; fflush(); }' "$@"
+}
+
+{
+    ### Event generator ###
+    # based on different input data (mpc, date, hlwm hooks, ...) this generates
+    # events, formed like this:
+    #   <eventname>\t<data> [...]
+
+    while true; do
+        # "date" output is checked once every ten seconds, but an event is
+        # generated only if the output changed compared to the previous run.
+        date +'date %{F#a09f93}%Y-%m-%d %{F#9999cc}%H:%M'
+        sleep 10 || break
+    done > >(uniq_linebuffered) &
+    datepid=$!
+
+    while true; do
+        echo -n "power "
+        battery=/sys/class/power_supply/BAT1
+        capacity=$(cat "${battery}/capacity")
+        if grep -q Charging "${battery}/status"; then
+            echo -n "%{F#99cc99}+"
+        elif [ "$capacity" -lt 16 ]; then
+            echo -n "%{B#f2777a}"
+        else
+            echo -n "%{F#ffcc66}"
+        fi
+        echo "$capacity"
+        sleep 120 || break
+    done > >(uniq_linebuffered) &
+    powerpid=$!
+
+    while true; do
+        echo -n "audio %{F#f2777a}"
+        device=$(amixer get Master | tail -1)
+        if grep -q off "$device"; then
+            echo "-"
+        else
+            awk '{ print $3 }' <<< "$device"
+        fi
+        sleep 5 || break
+    done > >(uniq_linebuffered) &
+    audiopid=$!
+
+    hc --idle
+
+    kill $datepid $powerpid $audiopid
+} 2> /dev/null | {
+    read -ra tags <<< "$(hc tag_status "$monitor")"
+
+    date=""
+    power=""
+    title=""
+
+    while true; do
+        ### Output ###
+        # This part prints lemonbar data based on the _previous_ data handling
+        # run, and then waits for the next event to happen.
+
+        separator="%{B-}%{F#ffcc66} | %{F-}"
+        # draw tags
+        echo -n "%{l}"
+        for i in "${tags[@]}" ; do
+            case ${i:0:1} in
+                '#')
+                    echo -n "%{B#ffcc66}%{F#2d2d2d}"
+                    ;;
+                '+')
+                    echo -n "%{B#99cc99}%{F#2d2d2d}"
+                    ;;
+                ':')
+                    echo -n "%{B-}%{F#f2f0ec}"
+                    ;;
+                '!')
+                    echo -n "%{B#f2777a}%{F#2d2d2d}"
+                    ;;
+                *)
+                    echo -n "%{B-}%{F#f2f0ec}"
+                    ;;
+            esac
+            echo -n "%{A:herbstclient use_index:} ${i:1} %{A}"
+        done
+
+        echo -n "$separator"
+        echo -n "${title//^/^^}"
+        echo -n "%{r}"
+        echo -n "$separator"
+        echo -n "$audio"
+        echo -n "$separator"
+        echo -n "$power%%"
+        echo -n "$separator"
+        echo -n "$date"
+        echo -n "$separator"
+        echo
+
+        ### Data handling ###
+        # This part handles the events generated in the event loop, and sets
+        # internal variables based on them. The event and its arguments are
+        # read into the array cmd, then action is taken depending on the event
+        # name.
+        # "Special" events (quit_panel/reload) are also handled here.
+
+        # wait for next event
+        read -ra cmd || break
+        # find out event origin
+        case "${cmd[0]}" in
+            tag*)
+                read -ra tags <<< "$(hc tag_status "$monitor")"
+                ;;
+            focus_changed|window_title_changed)
+                title=${cmd[*]:2}
+                ;;
+            audio)
+                audio=${cmd[*]:1}
+                ;;
+            power)
+                power=${cmd[*]:1}
+                ;;
+            date)
+                date=${cmd[*]:1}
+                ;;
+            quit_panel)
+                exit
+                ;;
+            reload)
+                exit
+                ;;
+        esac
+    done
+} 2> /dev/null | lemonbar -g "$(printf '%dx%d%+d%+d' $width $height $x $y)" \
+    -B '#181818' -F '#f2f0ec' -f "$font"

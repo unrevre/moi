@@ -32,6 +32,11 @@ export LESS_TERMCAP_ue=${__c[-]}
 export MOSH_ESCAPE_KEY=$'\x1F'
 export PYENV_ROOT="$HOME/.pyenv"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+{{- if (and (contains "local" .machine) (contains "arch" .flavour) (not (contains "wsl" .flavour))) }}
+export XSECURELOCK_BLANK_DPMS_STATE=on
+export XSECURELOCK_BLANK_TIMEOUT=-1
+export XSECURELOCK_FONT=tamzen
+{{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 

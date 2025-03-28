@@ -3,3 +3,6 @@ azure/
 .config/bash/azure.sh
 .local/share/bash-completion/completions/az-pim
 {{- end }}
+{{- if (or (not (contains "local" .machine)) (not (contains "arch" .flavour)) (contains "wsl" .flavour)) }}
+.config/herbstluftwm/
+{{- end }}

@@ -15,3 +15,6 @@
 azure/
 .config/bash/azure.sh
 {{- end }}
+{{- if not (has "x11" .tags) }}
+.config/herbstluftwm/
+{{- end }}

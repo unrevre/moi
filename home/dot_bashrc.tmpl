@@ -27,6 +27,14 @@ export LESS_TERMCAP_us=${__c[2]}
 export LESS_TERMCAP_ue=${__c[-]}
 export MOSH_ESCAPE_KEY=$'\x1F'
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+{{- if has "x11" .tags }}
+# picom removes the obscurer window in the wrong order, which raises
+# "INCOMPATIBLE COMPOSITOR" and lets windows bleed through the lock;
+# disabling the obscurer keeps the recommended overlay-covering mode,
+# so notifications also stay hidden while locked.
+export XSECURELOCK_COMPOSITE_OBSCURER=0
+export XSECURELOCK_FONT=tamzen
+{{- end }}
 {{- if has "azure" .tags }}
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI

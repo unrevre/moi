@@ -2,3 +2,6 @@
 azure/
 .config/bash/azure.sh
 {{- end }}
+{{- if (or (not (contains "local" .machine)) (not (contains "arch" .flavour)) (contains "wsl" .flavour)) }}
+.config/herbstluftwm/
+{{- end }}

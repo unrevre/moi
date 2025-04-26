@@ -2,6 +2,9 @@
 {{- if eq .chezmoi.os "linux" }}
 {{- if contains "work" .machine }}
 
+git-credential-manager configure
+git config --global credential.azreposCredentialType oauth
+
 conda config --set auto_activate_base false
 conda config --set changeps1 False
 {{- end }}

@@ -12,6 +12,12 @@ sudo pacman -S azure-cli azcopy
 {{- end }}
 {{- if has "ubuntu" .tags }}
 
+# install vim (latest appimage)
+vim_url=$(curl -fsSL https://api.github.com/repos/vim/vim-appimage/releases/latest \
+    | grep -oE 'https://[^"]+Vim-[^"]+x86_64\.AppImage' | head -1)
+wget -qO ~/.local/bin/vim "${vim_url}"
+chmod +x ~/.local/bin/vim
+
 # install mosh
 sudo apt install -y mosh
 

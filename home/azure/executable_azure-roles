@@ -298,7 +298,7 @@ function _sanitise_scope() {
         output="${choice}"
     fi
 
-    _scope+=$(awk '{print $2}' <<< "${output}")
+    _scope+=("$(awk '{print $2}' <<< "${output}")")
 }
 
 function _iterate_values() {

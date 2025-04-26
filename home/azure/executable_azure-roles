@@ -93,22 +93,28 @@ function _query_id_as_group() {
     _query_group_by_name "${input}"
 }
 
-function _sanitise_id() {
+function _sanitise_alias() {
     local input
 
     input="$1"
 
-    if [ -n "${rawid}" ]; then
-        uinfo=("${input}" "managed identity" "${input}")
-    else
-        if ! _query_id_as_user "${input}" && ! _query_id_as_group "${input}"; then
-            return 1
-        fi
+    if ! _query_id_as_user "${input}" && ! _query_id_as_group "${input}"; then
+        return 1
     fi
 
     _alias+=("${uinfo[0]}")
     _dname+=("${uinfo[1]}")
     _objid+=("${uinfo[2]}")
+}
+
+function _sanitise_rawid() {
+    local input
+
+    input="$1"
+
+    _alias+=("${input}")
+    _dname+=("raw id")
+    _objid+=("${input}")
 }
 
 function _validate_role() {
@@ -343,7 +349,7 @@ while [ $# -gt 0 ]; do
         -h|--help)      _help; exit 0 ;;
         -a|--alias)     alias=("${alias[@]}" "$2"); shift 2 ;;
         -b|--batch)     batch=true; shift ;;
-        -i|--rawid)     rawid=true; shift ;;
+        -i|--rawid)     rawid=("${rawid[@]}" "$2"); shift 2 ;;
         -r|--role)      role=("${role[@]}" "$2"); shift 2 ;;
         --role=*)       role=("${role[@]}" "${1#*=}"); shift ;;
         -s|--scope)     scope=("${scope[@]}" "$2"); shift 2 ;;
@@ -363,7 +369,8 @@ if [ -n "${prefix}" ]; then
     _emit_message i "echo-ing az-cli command"
 fi
 
-_iterate_values _sanitise_id "${alias[@]}"
+_iterate_values _sanitise_alias "${alias[@]}"
+_iterate_values _sanitise_rawid "${rawid[@]}"
 _iterate_values _sanitise_role "${role[@]}"
 _iterate_values _sanitise_scope "${scope[@]}"
 

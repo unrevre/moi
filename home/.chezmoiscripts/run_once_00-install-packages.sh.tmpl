@@ -27,6 +27,12 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # install azcopy
 wget 'https://aka.ms/downloadazcopy-v10-linux' -O /tmp/azcopy.tar.gz
 tar -xf /tmp/azcopy.tar.gz -C ~/.local/bin
+
+# install git-credential-manager
+_CM_GCM_URL=https://github.com/git-ecosystem/git-credential-manager
+_CM_GCM_VER=2.6.1
+wget "${_CM_GCM_URL}/releases/download/v${_CM_GCM_VER}/gcm-linux_amd64.${_CM_GCM_VER}.deb" -O /tmp/gcm-linux_amd64.deb
+sudo dpkg -i /tmp/gcm-linux_amd64.deb
 {{- if has "remote" .tags }}
 
 # install blobfuse

@@ -12,6 +12,15 @@ sudo pacman -S azure-cli azcopy
 {{- end }}
 {{- if contains "ubuntu" .flavour }}
 
+# install vim
+_CM_VIM_URL=https://github.com/vim/vim-appimage
+_CM_VIM_VER=9.1.1343
+_CM_VIM_ENV=glibc2.34-x86_64
+_CM_VIM_TAG=v${_CM_VIM_VER}.${_CM_VIM_ENV}
+wget "${_CM_VIM_URL}/releases/download/v${_CM_VIM_VER}/Vim-${_CM_VIM_TAG}.AppImage" -P ~/.local/bin
+chmod +x ~/.local/bin/Vim-${_CM_VIM_TAG}.AppImage
+ln -s ~/.local/bin/Vim-${_CM_VIM_TAG}.AppImage ~/.local/bin/vim
+
 # install mosh
 sudo apt install -y mosh
 
@@ -27,6 +36,12 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # install azcopy
 wget 'https://aka.ms/downloadazcopy-v10-linux' -O /tmp/azcopy.tar.gz
 tar -xf /tmp/azcopy.tar.gz -C ~/.local/bin
+
+# install git-credential-manager
+_CM_GCM_URL=https://github.com/git-ecosystem/git-credential-manager
+_CM_GCM_VER=2.6.1
+wget "${_CM_GCM_URL}/releases/download/v${_CM_GCM_VER}/gcm-linux_amd64.${_CM_GCM_VER}.deb" -O /tmp/gcm-linux_amd64.deb
+sudo dpkg -i /tmp/gcm-linux_amd64.deb
 {{- if contains "remote" .machine }}
 
 # install blobfuse

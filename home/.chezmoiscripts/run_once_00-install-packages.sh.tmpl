@@ -4,7 +4,7 @@ mkdir -p ~/.local/bin/
 {{- if eq .chezmoi.os "linux" }}
 {{- if has "arch" .tags }}
 
-sudo pacman -S mosh fzf
+sudo pacman -S mosh fzf python-pipx
 {{- if has "azure" .tags }}
 
 sudo pacman -S azure-cli azcopy
@@ -25,6 +25,9 @@ sudo apt install -y mosh
 git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
 bash /tmp/fzf/install --bin --no-update-rc
 cp /tmp/fzf/bin/fzf ~/.local/bin/
+
+# install pipx
+sudo apt install -y pipx
 {{- if has "azure" .tags }}
 
 # install azure-cli
@@ -49,6 +52,18 @@ sudo apt install -y restic
 sudo restic self-update
 {{- end }}
 {{- end }}
+{{- end }}
+
+# configure pipx
+pipx ensurepath
+
+# install python applications
+pipx install python-lsp-server
+pipx install ruff
+{{- if has "azure" .tags }}
+
+# install python applications
+pipx install amlt --pip-args=' --index-url https://msrpypi.azurewebsites.net/stable/leloojoo'
 {{- end }}
 {{- if has "conda" .tags }}
 

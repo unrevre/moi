@@ -75,7 +75,9 @@ completions=(
     /usr/share/bash-completion/completions/pacman
     /usr/share/bash-completion/completions/pip
     /usr/share/bash-completion/completions/pyenv
+{{- if contains "work" .machine }}
     "$HOME/.local/share/bash-completion/completions/conda"
+{{- end }}
 )
 
 # shellcheck source=/dev/null

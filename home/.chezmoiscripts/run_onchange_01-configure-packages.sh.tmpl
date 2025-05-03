@@ -5,6 +5,9 @@
 git-credential-manager configure
 git config --global credential.azreposCredentialType oauth
 
+# source conda manually
+source "${HOME}/conda/etc/profile.d/conda.sh"
+
 conda config --set auto_activate_base false
 conda config --set changeps1 False
 {{- end }}

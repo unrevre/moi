@@ -11,61 +11,61 @@
 
 .vim/bundle/ale:
   type: git-repo
-  url: 'git@github.com:unrevre/ale.git'
+  url: 'https://github.com/unrevre/ale.git'
 .vim/bundle/targets.vim:
   type: git-repo
-  url: 'git@github.com:wellle/targets.vim.git'
+  url: 'https://github.com/wellle/targets.vim.git'
 .vim/bundle/vader.vim:
   type: git-repo
-  url: 'git@github.com:junegunn/vader.vim.git'
+  url: 'https://github.com/junegunn/vader.vim.git'
 .vim/bundle/vim-after-object:
   type: git-repo
-  url: 'git@github.com:junegunn/vim-after-object.git'
+  url: 'https://github.com/junegunn/vim-after-object.git'
 .vim/bundle/vimagit:
   type: git-repo
-  url: 'git@github.com:unrevre/vimagit.git'
+  url: 'https://github.com/unrevre/vimagit.git'
 .vim/bundle/vim-bufkill:
   type: git-repo
-  url: 'git@github.com:qpkorr/vim-bufkill.git'
+  url: 'https://github.com/qpkorr/vim-bufkill.git'
 .vim/bundle/vim-commentary:
   type: git-repo
-  url: 'git@github.com:tpope/vim-commentary.git'
+  url: 'https://github.com/tpope/vim-commentary.git'
 .vim/bundle/vim-cool:
   type: git-repo
-  url: 'git@github.com:romainl/vim-cool.git'
+  url: 'https://github.com/romainl/vim-cool.git'
 .vim/bundle/vim-easy-align:
   type: git-repo
-  url: 'git@github.com:junegunn/vim-easy-align.git'
+  url: 'https://github.com/junegunn/vim-easy-align.git'
 .vim/bundle/vim-exchange:
   type: git-repo
-  url: 'git@github.com:tommcdo/vim-exchange.git'
+  url: 'https://github.com/tommcdo/vim-exchange.git'
 .vim/bundle/vim-matchup:
   type: git-repo
-  url: 'git@github.com:andymass/vim-matchup.git'
+  url: 'https://github.com/andymass/vim-matchup.git'
 .vim/bundle/vim-peekaboo:
   type: git-repo
-  url: 'git@github.com:junegunn/vim-peekaboo.git'
+  url: 'https://github.com/junegunn/vim-peekaboo.git'
 .vim/bundle/vim-pencil:
   type: git-repo
-  url: 'git@github.com:preservim/vim-pencil.git'
+  url: 'https://github.com/preservim/vim-pencil.git'
 .vim/bundle/vim-qf:
   type: git-repo
-  url: 'git@github.com:romainl/vim-qf.git'
+  url: 'https://github.com/romainl/vim-qf.git'
 .vim/bundle/vim-repeat:
   type: git-repo
-  url: 'git@github.com:tpope/vim-repeat.git'
+  url: 'https://github.com/tpope/vim-repeat.git'
 .vim/bundle/vim-surround:
   type: git-repo
-  url: 'git@github.com:tpope/vim-surround.git'
+  url: 'https://github.com/tpope/vim-surround.git'
 .vim/bundle/vim-tradewinds:
   type: git-repo
-  url: 'git@github.com:andymass/vim-tradewinds.git'
+  url: 'https://github.com/andymass/vim-tradewinds.git'
 .vim/bundle/vim-usnip:
   type: git-repo
-  url: 'git@github.com:unrevre/vim-usnip.git'
+  url: 'https://github.com/unrevre/vim-usnip.git'
 .vim/bundle/vim-vinegar:
   type: git-repo
-  url: 'git@github.com:unrevre/vim-vinegar.git'
+  url: 'https://github.com/unrevre/vim-vinegar.git'
 .vim/bundle/vimwiki:
   type: git-repo
-  url: 'git@github.com:vimwiki/vimwiki.git'
+  url: 'https://github.com/vimwiki/vimwiki.git'

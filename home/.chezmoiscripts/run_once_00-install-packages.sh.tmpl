@@ -4,7 +4,7 @@ mkdir -p ~/.local/bin/
 {{- if eq .chezmoi.os "linux" }}
 {{- if contains "arch" .flavour }}
 
-sudo pacman -S mosh fzf python-pipx
+sudo pacman -S mosh fzf pyenv python-pipx
 {{- if contains "work" .machine }}
 
 sudo pacman -S azure-cli azcopy
@@ -28,6 +28,9 @@ sudo apt install -y mosh
 git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
 bash /tmp/fzf/install --bin --no-update-rc
 cp /tmp/fzf/bin/fzf ~/.local/bin/
+
+# install pyenv
+curl -fsSL https://pyenv.run | bash
 
 # install pipx
 sudo apt install -y pipx

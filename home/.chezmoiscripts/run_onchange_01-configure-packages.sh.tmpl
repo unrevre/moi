@@ -4,6 +4,9 @@
 
 git-credential-manager configure
 git config --global credential.azreposCredentialType oauth
+{{- if has "remote" .tags }}
+git config --global credential.msauthFlow devicecode
+{{- end }}
 {{- end }}
 {{- if has "conda" .tags }}
 

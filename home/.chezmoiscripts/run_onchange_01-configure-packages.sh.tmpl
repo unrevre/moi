@@ -4,6 +4,9 @@
 
 git-credential-manager configure
 git config --global credential.azreposCredentialType oauth
+{{- if contains "remote" .machine }}
+git config --global credential.msauthFlow devicecode
+{{- end }}
 
 # source conda manually
 source "${HOME}/conda/etc/profile.d/conda.sh"

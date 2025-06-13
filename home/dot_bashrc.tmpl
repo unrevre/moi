@@ -23,14 +23,13 @@ done
 
 export EDITOR="vim"
 export PATH="$HOME/.local/bin:$PATH"
+{{- if contains "work" .machine }}
 {{- if contains "local" .machine }}
 export PATH="$HOME/.cargo/bin:$PATH"
 {{- end }}
-{{- if contains "work" .machine }}
 export PATH="$HOME/azure:$PATH"
 {{- end }}
 
-export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 export FZF_DEFAULT_OPTS='--multi --layout reverse --height ~40% --border --color=info:2,border:3,spinner:4,hl:3,pointer:1,header:4,marker:11,prompt:11,hl+:1 --bind "ctrl-e:preview-down,ctrl-y:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up"'
 export GCC_COLORS='error=38;5;1:warning=38;5;9:note=38;5;3:caret=38;5;2:locus=01:quote=01'
 export LESS_TERMCAP_md=${__c[0]}
@@ -46,6 +45,10 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export XSECURELOCK_BLANK_DPMS_STATE=on
 export XSECURELOCK_BLANK_TIMEOUT=-1
 export XSECURELOCK_FONT=tamzen
+{{- end }}
+{{- if contains "work" .machine }}
+
+export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"

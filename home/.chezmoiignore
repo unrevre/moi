@@ -5,5 +5,8 @@ azure/
 {{- if (or (not (contains "local" .machine)) (not (contains "arch" .flavour)) (contains "wsl" .flavour)) }}
 .config/herbstluftwm/
 .config/kitty/
+.config/picom/
 .config/rofi/
+.xinitrc
+.Xresources
 {{- end }}

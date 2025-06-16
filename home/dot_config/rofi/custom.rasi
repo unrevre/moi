@@ -1,0 +1,55 @@
+* {
+    background-color:   transparent;
+    border-color:       inherit;
+    text-color:         inherit;
+    font:               "tamzen 12";
+}
+window {
+    orientation:        vertical;
+    height:             96%;
+    width:              96%;
+    location:           south;
+    anchor:             south;
+    y-offset:           -2%;
+    transparency:       "real";
+    background-color:   #101010cc;
+    border:             2px;
+    border-radius:      8px;
+    border-color:       #ffcc66;
+    padding:            64px;
+    children:           [ listview, prompt-row ];
+}
+prompt-row {
+    expand:             false;
+    orientation:        horizontal;
+    border:             1px dash 0px 0px;
+    border-color:       #ffffff;
+    padding:            8px 0px;
+    children:           [ prompt, textbox-prompt-colon, entry ];
+}
+prompt {
+    text-color:         #f99157;
+}
+textbox-prompt-colon {
+    padding:            0px 0.5em 0px 0px;
+    expand:             false;
+    text-color:         #f99157;
+    str:                ":";
+}
+entry {
+    expand:             false;
+    width:              100%;
+    text-color:         #f2777a;
+    placeholder:        "...";
+}
+listview {
+    expand:             true;
+    layout:             vertical;
+    reverse:            true;
+    spacing:            4px;
+    padding:            4px 0px;
+    text-color:         #ffcc66;
+}
+element {
+    padding:            0px 2px;
+}

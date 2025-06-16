@@ -1,0 +1,27 @@
+! colour scheme
+*foreground:	#f2f0ec
+*background:	#101010
+
+*color0:	#101010
+*color8:	#393939
+
+*color1:	#f2777a
+*color9:	#515151
+
+*color2:	#99cc99
+*color10:	#cdea40
+
+*color3:	#ffcc66
+*color11:	#f99157
+
+*color4:	#6699cc
+*color12:	#747369
+
+*color5:	#9999cc
+*color13:	#a09f93
+
+*color6:	#90b4d8
+*color14:	#d3d0c8
+
+*color7:	#f2f0ec
+*color15:	#e8e6df

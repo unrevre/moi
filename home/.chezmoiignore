@@ -17,6 +17,7 @@ azure/
 {{- end }}
 {{- if not (has "x11" .tags) }}
 .config/herbstluftwm/
+.config/rofi/
 {{- end }}
 {{- if not (has "gui" .tags) }}
 .config/kitty/

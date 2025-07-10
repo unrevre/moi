@@ -49,6 +49,11 @@ export XSECURELOCK_FONT=tamzen
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- end }}
+{{- if has "volc" .tags }}
+
+export APPIMAGE_EXTRACT_AND_RUN=1
+export TERM=xterm-256color
+{{- end }}
 
 alias dots='git --git-dir=$HOME/.dots --work-tree=$HOME'
 alias grep='grep --color=auto'
@@ -82,6 +87,11 @@ for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
 {{- if has "conda" .tags }}
 
 source "${HOME}/conda/etc/profile.d/conda.sh"
+{{- end }}
+{{- if has "volc" .tags }}
+
+# volc settings
+[ -r ~/.volc/.profile ] && source ~/.volc/.profile
 {{- end }}
 
 completions=(

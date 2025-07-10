@@ -50,6 +50,10 @@ export XSECURELOCK_FONT=tamzen
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- end }}
+{{- if contains "volce" .machine }}
+
+export APPIMAGE_EXTRACT_AND_RUN=1
+{{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
@@ -193,3 +197,10 @@ _as_aur_package_url() {
 bind -x '"\C-x\C-a":"_expand_cursor_word ap;"'
 bind -x '"\C-x\C-g":"_expand_cursor_word _as_github_url;"'
 bind -x '"\C-x\C-u":"_expand_cursor_word _as_aur_package_url;"'
+{{- if contains "volce" .machine }}
+
+# volce settings
+/opt/ml-platform/configure-sources/auto-configure.sh
+
+[ -r ~/.volc/.profile ] && source ~/.volc/.profile
+{{- end }}

@@ -49,6 +49,7 @@ export XSECURELOCK_FONT=tamzen
 {{- if contains "work" .machine }}
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
+export APPIMAGE_EXTRACT_AND_RUN=1
 {{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
@@ -87,6 +88,7 @@ for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
 
 {{- if (and (contains "remote" .machine) (contains "work" .machine)) }}
 source "${HOME}/conda/etc/profile.d/conda.sh"
+source "${HOME}/.volc/.profile"
 {{- end }}
 
 completions=(

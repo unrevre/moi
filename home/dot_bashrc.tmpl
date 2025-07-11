@@ -23,10 +23,7 @@ done
 
 export EDITOR="vim"
 export PATH="$HOME/.local/bin:$PATH"
-{{- if contains "work" .machine }}
-{{- if contains "local" .machine }}
-export PATH="$HOME/.cargo/bin:$PATH"
-{{- end }}
+{{- if contains "azure" .machine }}
 export PATH="$HOME/azure:$PATH"
 {{- end }}
 
@@ -46,7 +43,7 @@ export XSECURELOCK_BLANK_DPMS_STATE=on
 export XSECURELOCK_BLANK_TIMEOUT=-1
 export XSECURELOCK_FONT=tamzen
 {{- end }}
-{{- if contains "work" .machine }}
+{{- if contains "azure" .machine }}
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- end }}
@@ -89,12 +86,12 @@ eval "$(fzf --bash)"
 # shellcheck source=/dev/null
 for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
 
-{{- if (and (contains "remote" .machine) (contains "work" .machine)) }}
+{{- if contains "conda" .machine }}
 source "${HOME}/conda/etc/profile.d/conda.sh"
 {{- end }}
 
 completions=(
-{{- if contains "work" .machine }}
+{{- if contains "azure" .machine }}
     /usr/share/bash-completion/completions/az
 {{- end }}
     /usr/share/bash-completion/completions/git
@@ -103,7 +100,7 @@ completions=(
     /usr/share/bash-completion/completions/pacman
     /usr/share/bash-completion/completions/pip
     /usr/share/bash-completion/completions/pyenv
-{{- if contains "work" .machine }}
+{{- if contains "conda" .machine }}
     "$HOME/.local/share/bash-completion/completions/conda"
 {{- end }}
 )
@@ -166,7 +163,7 @@ _get_git_branch() {
 }
 
 _get_environment() {
-{{- if contains "work" .machine }}
+{{- if contains "conda" .machine }}
     [[ -n "$CONDA_DEFAULT_ENV" ]] && echo " (${CONDA_DEFAULT_ENV})"
 {{- end }}
     [[ -n "$VIRTUAL_ENV" ]] && echo " (${VIRTUAL_ENV##*/})"
@@ -200,7 +197,5 @@ bind -x '"\C-x\C-u":"_expand_cursor_word _as_aur_package_url;"'
 {{- if contains "volce" .machine }}
 
 # volce settings
-/opt/ml-platform/configure-sources/auto-configure.sh
-
 [ -r ~/.volc/.profile ] && source ~/.volc/.profile
 {{- end }}

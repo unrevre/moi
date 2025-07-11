@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 {{- if eq .chezmoi.os "linux" }}
-{{- if contains "work" .machine }}
+{{- if contains "azure" .machine }}
 
 git-credential-manager configure
 git config --global credential.azreposCredentialType oauth
 {{- if contains "remote" .machine }}
 git config --global credential.msauthFlow devicecode
 {{- end }}
+{{- end }}
+{{- if contains "conda" .machine }}
 
 # source conda manually
 source "${HOME}/conda/etc/profile.d/conda.sh"

@@ -50,6 +50,7 @@ export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- if contains "volce" .machine }}
 
 export APPIMAGE_EXTRACT_AND_RUN=1
+export TERM=xterm-256color
 {{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"

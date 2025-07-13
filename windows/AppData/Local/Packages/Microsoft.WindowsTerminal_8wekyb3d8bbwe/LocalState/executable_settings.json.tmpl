@@ -1,105 +1,132 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [],
-    "copyFormatting": "none",
-    "copyOnSelect": true,
-    "defaultProfile": "{0deb5dfd-82a8-52a3-be29-6cdb8c8d08b2}",
-    "keybindings": 
+    "actions": 
     [
         {
-            "id": "Terminal.FindText",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "enter"
         },
         {
-            "id": "Terminal.DuplicatePaneAuto",
-            "keys": "alt+shift+d"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+insert"
         },
         {
-            "id": "Terminal.SwitchToTab1",
-            "keys": "alt+shift+2"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+alt+4"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+alt+7"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "shift+insert"
         },
         {
-            "id": "Terminal.SwitchToTab0",
-            "keys": "alt+shift+1"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+1"
         },
         {
-            "id": null,
-            "keys": "ctrl+alt+9"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+2"
         },
         {
-            "id": "Terminal.SwitchToTab2",
-            "keys": "alt+shift+3"
-        },
-        {
-            "id": "Terminal.SwitchToTab3",
-            "keys": "alt+shift+4"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+3"
         },
         {
-            "id": "Terminal.SwitchToTab4",
-            "keys": "alt+shift+5"
+            "command": "unbound",
+            "keys": "ctrl+alt+4"
         },
         {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+5"
         },
         {
-            "id": "Terminal.SwitchToTab5",
-            "keys": "alt+shift+6"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+6"
         },
         {
-            "id": "Terminal.SwitchToTab6",
-            "keys": "alt+shift+7"
+            "command": "unbound",
+            "keys": "ctrl+alt+7"
         },
         {
-            "id": "Terminal.SwitchToTab7",
-            "keys": "alt+shift+8"
-        },
-        {
-            "id": null,
+            "command": "unbound",
             "keys": "ctrl+alt+8"
         },
         {
-            "id": "Terminal.SwitchToLastTab",
+            "command": "unbound",
+            "keys": "ctrl+alt+9"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 0
+            },
+            "keys": "alt+shift+1"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 1
+            },
+            "keys": "alt+shift+2"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 2
+            },
+            "keys": "alt+shift+3"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 3
+            },
+            "keys": "alt+shift+4"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 4
+            },
+            "keys": "alt+shift+5"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 5
+            },
+            "keys": "alt+shift+6"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 6
+            },
+            "keys": "alt+shift+7"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 7
+            },
+            "keys": "alt+shift+8"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 4294967295
+            },
             "keys": "alt+shift+0"
         }
     ],
+    "copyFormatting": "none",
+    "copyOnSelect": true,
+    "defaultProfile": "{{- env "WT_PROFILE_ID" -}}",
     "language": "en-US",
     "newTabMenu": 
     [
@@ -115,7 +142,7 @@
             "cursorShape": "filledBox",
             "font": 
             {
-                "size": 8,
+                "size": 8.0,
                 "weight": "normal"
             },
             "intenseTextStyle": "bold"
@@ -123,7 +150,7 @@
         "list": 
         [
             {
-                "guid": "{0deb5dfd-82a8-52a3-be29-6cdb8c8d08b2}",
+                "guid": "{{- env "WT_PROFILE_ID" -}}",
                 "hidden": false,
                 "name": "archlinux",
                 "source": "Microsoft.WSL"
@@ -145,12 +172,6 @@
                 "hidden": false,
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{a634b3e1-9903-53f8-bdb4-cf8234e6c290}",
-                "hidden": false,
-                "name": "Ubuntu",
-                "source": "Microsoft.WSL"
             }
         ]
     },
@@ -187,7 +208,6 @@
             "tab": 
             {
                 "background": "#1E1E2EFF",
-                "iconStyle": "default",
                 "showCloseButton": "always",
                 "unfocusedBackground": null
             },
@@ -199,9 +219,6 @@
             "window": 
             {
                 "applicationTheme": "dark",
-                "experimental.rainbowFrame": false,
-                "frame": null,
-                "unfocusedFrame": null,
                 "useMica": false
             }
         }

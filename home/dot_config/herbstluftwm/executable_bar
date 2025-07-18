@@ -54,7 +54,7 @@ uniq_linebuffered() {
     while true; do
         echo -n "audio %{F#f2777a}"
         device=$(amixer get Master | tail -1)
-        if grep -q off "$device"; then
+        if grep -q off <<< "$device"; then
             echo "-"
         else
             awk '{ print $3 }' <<< "$device"

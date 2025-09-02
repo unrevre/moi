@@ -4,6 +4,26 @@
  */
 @import 'https://www.nerdfonts.com/assets/css/webfont.css';
 
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
 i {
   font-size: 12px;
   margin-right: 0px;

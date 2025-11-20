@@ -84,6 +84,8 @@ stty -ixon
 eval "$(pyenv init -)"
 eval "$(fzf --bash)"
 
+bind -r '\e\e'
+
 # shellcheck source=/dev/null
 for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
 {{- if contains "conda" .machine }}

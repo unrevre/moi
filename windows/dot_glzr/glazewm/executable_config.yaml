@@ -125,6 +125,11 @@ window_rules:
         window_title: { regex: '.*? - Peek' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper' }
+  - commands: ['set-floating']
+    match:
+      # WSLg windows
+      - windows_process: { equals: 'msrdc' }
+        window_class: { regex: 'RAIL_WINDOW' }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.

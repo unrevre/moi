@@ -1,0 +1,3 @@
+.cache/chezmoi/slate:
+  type: git-repo
+  url: 'https://github.com/unrevre/slate.git'

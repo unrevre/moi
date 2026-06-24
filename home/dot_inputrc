@@ -1,5 +1,6 @@
 set colored-stats on
 set colored-completion-prefix on
+set bind-tty-special-chars off
 
 "\C-k": kill-line
 "\C-j": backward-kill-line

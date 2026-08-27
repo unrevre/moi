@@ -9,12 +9,12 @@ IFS=" " read -ra geometry <<< "$(hc monitor_rect "$monitor")"
 # geometry has the format X Y W H
 x=${geometry[0]}
 y=${geometry[1]}
-width=${geometry[2]}
-height=20
+w=${geometry[2]}
+h=20
 
 font="-misc-tamzen-medium-r-normal--15-*-*-*-*-*-iso8859-1"
 
-hc pad "$monitor" "$height"
+hc pad "$monitor" "$h"
 
 # shellcheck disable=SC2120
 uniq_linebuffered() {
@@ -30,23 +30,27 @@ uniq_linebuffered() {
     while true; do
         # "date" output is checked once every ten seconds, but an event is
         # generated only if the output changed compared to the previous run.
-        date +'date %{F#a09f93}%Y-%m-%d %{F#9999cc}%H:%M'
+        date +'time %{F#a09f93}%Y-%m-%d %{F#9999cc}%H:%M'
         sleep 10 || break
     done > >(uniq_linebuffered) &
-    datepid=$!
+    time=$!
 
     while true; do
         echo -n "power "
-        battery=/sys/class/power_supply/BAT1
+        battery=/sys/class/power_supply/BAT0
         capacity=$(cat "${battery}/capacity")
+
         if grep -q Charging "${battery}/status"; then
             echo -n "%{F#99cc99}+"
         elif [ "$capacity" -lt 16 ]; then
-            echo -n "%{B#f2777a}"
+            echo -n "%{F#f2777a}"
+        elif [ "$capacity" -lt 25 ]; then
+            echo -n "%{F#f99157}"
         else
             echo -n "%{F#ffcc66}"
         fi
-        echo "$capacity"
+
+        printf "%3s\n" "$capacity"
         sleep 120 || break
     done > >(uniq_linebuffered) &
     powerpid=$!
@@ -54,8 +58,9 @@ uniq_linebuffered() {
     while true; do
         echo -n "audio %{F#f2777a}"
         device=$(amixer get Master | tail -1)
+
         if grep -q off <<< "$device"; then
-            echo "-"
+            echo " - "
         else
             awk '{ print $3 }' <<< "$device"
         fi
@@ -65,12 +70,13 @@ uniq_linebuffered() {
 
     hc --idle
 
-    kill $datepid $powerpid $audiopid
+    kill $time $powerpid $audiopid
 } 2> /dev/null | {
     read -ra tags <<< "$(hc tag_status "$monitor")"
 
-    date=""
+    time=""
     power=""
+    audio=""
     title=""
 
     while true; do
@@ -99,7 +105,7 @@ uniq_linebuffered() {
                     echo -n "%{B-}%{F#f2f0ec}"
                     ;;
             esac
-            echo -n "%{A:herbstclient use_index:} ${i:1} %{A}"
+            echo -n "%{A:herbstclient use \"\":} ${i:1} %{A}"
         done
 
         echo -n "$separator"
@@ -110,7 +116,7 @@ uniq_linebuffered() {
         echo -n "$separator"
         echo -n "$power%%"
         echo -n "$separator"
-        echo -n "$date"
+        echo -n "$time"
         echo -n "$separator"
         echo
 
@@ -137,8 +143,8 @@ uniq_linebuffered() {
             power)
                 power=${cmd[*]:1}
                 ;;
-            date)
-                date=${cmd[*]:1}
+            time)
+                time=${cmd[*]:1}
                 ;;
             quit_panel)
                 exit
@@ -148,5 +154,5 @@ uniq_linebuffered() {
                 ;;
         esac
     done
-} 2> /dev/null | lemonbar -g "$(printf '%dx%d%+d%+d' $width $height $x $y)" \
+} 2> /dev/null | lemonbar -g "$(printf '%dx%d%+d%+d' $w $h $x $y)" \
     -B '#181818' -F '#f2f0ec' -f "$font"

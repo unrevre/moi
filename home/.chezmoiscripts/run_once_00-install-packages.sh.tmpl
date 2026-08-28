@@ -9,6 +9,12 @@ sudo pacman -S mosh fzf pyenv python-pipx
 
 sudo pacman -S azure-cli azcopy
 {{- end }}
+{{- if contains "nvidia" .machine }}
+
+{{- if contains "wsl" .flavour }}
+sudo pacman -S cuda cuda-tools
+{{- end }}
+{{- end }}
 {{- end }}
 {{- if contains "ubuntu" .flavour }}
 

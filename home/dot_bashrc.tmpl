@@ -26,6 +26,13 @@ export PATH="$HOME/.local/bin:$PATH"
 {{- if contains "azure" .machine }}
 export PATH="$HOME/azure:$PATH"
 {{- end }}
+{{- if contains "nvidia" .machine }}
+{{- if contains "wsl" .flavour }}
+export LD_LIBRARY_PATH="/opt/cuda/lib64:$LD_LIBRARY_PATH"
+{{- else }}
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+{{- end }}
+{{- end }}
 
 export FZF_DEFAULT_OPTS='--multi --layout reverse --height ~40% --border --color=info:2,border:3,spinner:4,hl:3,pointer:1,header:4,marker:11,prompt:11,hl+:1 --bind "ctrl-e:preview-down,ctrl-y:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up"'
 export GCC_COLORS='error=38;5;1:warning=38;5;9:note=38;5;3:caret=38;5;2:locus=01:quote=01'
@@ -42,15 +49,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export XSECURELOCK_BLANK_DPMS_STATE=on
 export XSECURELOCK_BLANK_TIMEOUT=-1
 export XSECURELOCK_FONT=tamzen
+export XSECURELOCK_NO_COMPOSITE=1
 {{- end }}
 {{- if contains "azure" .machine }}
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
-{{- end }}
-{{- if (and (contains "remote" .machine) (contains "volc" .machine)) }}
-
-export APPIMAGE_EXTRACT_AND_RUN=1
-export TERM=xterm-256color
 {{- end }}
 
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
@@ -91,10 +94,6 @@ for f in "${HOME}"/.config/bash/*.sh; do [[ -r "$f" ]] && . "$f"; done
 {{- if contains "conda" .machine }}
 
 source "${HOME}/conda/etc/profile.d/conda.sh"
-{{- end }}
-{{- if contains "volc" .machine }}
-
-source "${HOME}/.volc/.profile"
 {{- end }}
 
 completions=(

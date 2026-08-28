@@ -26,6 +26,13 @@ export PATH="$HOME/.local/bin:$PATH"
 {{- if has "azure" .tags }}
 export PATH="$HOME/azure:$PATH"
 {{- end }}
+{{- if has "nvidia" .tags }}
+{{- if has "wsl" .tags }}
+export LD_LIBRARY_PATH="/opt/cuda/lib64:$LD_LIBRARY_PATH"
+{{- else }}
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+{{- end }}
+{{- end }}
 
 export FZF_DEFAULT_OPTS='--multi --layout reverse --height ~40% --border --color=info:2,border:3,spinner:4,hl:3,pointer:1,header:4,marker:11,prompt:11,hl+:1 --bind "ctrl-e:preview-down,ctrl-y:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up"'
 export GCC_COLORS='error=38;5;1:warning=38;5;9:note=38;5;3:caret=38;5;2:locus=01:quote=01'

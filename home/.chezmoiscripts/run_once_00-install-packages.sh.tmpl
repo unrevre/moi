@@ -9,6 +9,12 @@ sudo pacman -S mosh fzf python-pipx
 
 sudo pacman -S azure-cli azcopy
 {{- end }}
+{{- if has "nvidia" .tags }}
+
+{{- if has "wsl" .tags }}
+sudo pacman -S cuda cuda-tools
+{{- end }}
+{{- end }}
 {{- end }}
 {{- if has "ubuntu" .tags }}
 

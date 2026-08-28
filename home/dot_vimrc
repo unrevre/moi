@@ -27,7 +27,7 @@ execute pathogen#infect()
 filetype plugin indent on
 syntax on
 
-set background=light
+set background=dark
 set encoding=utf-8
 
 set autoindent
@@ -285,7 +285,7 @@ endfunction!
 
 autocmd! ColorScheme * call s:customise_highlight_groups()
 
-colorscheme colours
+colorscheme lune
 " }}}
 
 " plugin settings {{{
@@ -399,6 +399,20 @@ let g:matchup_motion_cursor_end = 0
 let g:matchup_motion_override_Npercent = 0
 
 nnoremap <leader>i :<C-u>MatchupWhereAmI??<CR>
+" }}}
+
+" parrot {{{
+let g:parrot_agents = {
+      \ 'default': {
+      \   'species': 'codex',
+      \   'env': {'CODEX_HOME': expand('~/.codex')},
+      \ },
+      \ 'personal': {
+      \   'species': 'codex',
+      \   'env': {'CODEX_HOME': expand('~/git/.codex')},
+      \ },
+      \ }
+let g:parrot_split_size = &columns / 2
 " }}}
 
 " pencil {{{

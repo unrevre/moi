@@ -1,16 +1,29 @@
 " vi:syntax=vim
 
-" Theme setup
-highlight clear
-syntax reset
-let g:colors_name = "colours"
+" ANSI palette shared by soleil and lune
+highlight! ColorColumn  ctermbg=9
+highlight! CursorLineNr ctermfg=3
+highlight! Directory    ctermfg=4
+highlight! MoreMsg      ctermfg=2
+highlight! Question     ctermfg=2
+highlight! SpecialKey   ctermfg=4
+highlight! Title        ctermfg=5
+highlight! WarningMsg   ctermfg=1
 
-" Customise highlights
+highlight! Added        ctermfg=2   cterm=none
+highlight! Comment      ctermfg=4   cterm=none
+highlight! Constant     ctermfg=1   cterm=none
+highlight! Identifier   ctermfg=6   cterm=none
+highlight! Ignore       ctermfg=15  cterm=none
+highlight! PreProc      ctermfg=5   cterm=none
+highlight! Special      ctermfg=5   cterm=none
+highlight! Type         ctermfg=2   cterm=none
+highlight! Underlined   ctermfg=5   cterm=underline
+
 highlight! DiffAdd      ctermfg=0   ctermbg=2
 highlight! DiffChange   ctermfg=0   ctermbg=3
 highlight! DiffDelete   ctermfg=0   ctermbg=1
 highlight! DiffText     ctermfg=0   ctermbg=11  cterm=none
-highlight! Error        ctermfg=0   ctermbg=7
 highlight! Folded       ctermfg=7   ctermbg=9
 highlight! LineNr       ctermfg=12  ctermbg=8
 highlight! MatchParen   ctermfg=0   ctermbg=3

@@ -14,22 +14,21 @@ backtick 1 30 30 $HOME/.config/screen/stat-cpu
 
 # status bar
 caption always
-caption string '%{= wk}[%= %{wk}%?%-w%?%{wk}%?%F%{rk}%?%?%P%{gk}%?%?%E%{yk}%? %n*%t %{wk}%?%+w%?%{= wk} %=]'
+caption string '%{= 0;7}[%= %{0;7}%?%-w%?%{0;7}%?%F%{0;1}%?%?%P%{0;2}%?%?%E%{0;3}%? %n*%t %{0;7}%?%+w%?%{= 0;7} %=]'
 hardstatus alwayslastline
-hardstatus string '%{= wk}[%0`/%1`][%= %h (%S) %=]%{= wk}[%m/%d %C%A]'
+hardstatus string '%{= 0;7}[%0`/%1`][%= %h (%S) %=]%{= 0;7}[%m/%d %C%A]'
 
 # display settings
-term xterm-256color
+term screen-256color
 termcapinfo xterm-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 
 # key bindings
 bind K kill
 bind Q quit
-bind R eval "source $HOME/.screenrc"
 
 bind h focus left
-bind j focus up
-bind k focus down
+bind j focus down
+bind k focus up
 bind l focus right
 bind q only
 bind t title

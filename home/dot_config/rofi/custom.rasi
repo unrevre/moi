@@ -6,13 +6,13 @@
 }
 window {
     orientation:        vertical;
-    height:             96%;
+    height:             84%;
     width:              96%;
-    location:           south;
-    anchor:             south;
-    y-offset:           -2%;
+    location:           center;
+    anchor:             center;
+    y-offset:           8px;
     transparency:       "real";
-    background-color:   #101010cc;
+    background-color:   #101010dd;
     border:             2px;
     border-radius:      8px;
     border-color:       #ffcc66;

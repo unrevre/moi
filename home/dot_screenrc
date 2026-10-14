@@ -14,9 +14,9 @@ backtick 1 30 30 $HOME/.config/screen/stat-cpu
 
 # status bar
 caption always
-caption string '%{= wk}[%= %{wk}%?%-w%?%{wk}%?%F%{rk}%?%?%P%{gk}%?%?%E%{yk}%? %n*%t %{wk}%?%+w%?%{= wk} %=]'
+caption string '%{= 0;7}[%= %?%-w%?%?%F%{0;1}%?%?%P%{0;2}%?%?%E%{0;3}%? %n*%t %{0;7}%?%+w%?%{= 0;7} %=]'
 hardstatus alwayslastline
-hardstatus string '%{= wk}[%0`/%1`][%= %h (%S) %=]%{= wk}[%m/%d %C%A]'
+hardstatus string '%{= 0;7}[%0`/%1`][%= %h (%S) %=]%{= 0;7}[%m/%d %C%A]'
 
 # display settings
 term xterm-256color

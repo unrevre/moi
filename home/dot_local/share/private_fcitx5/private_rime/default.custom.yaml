@@ -1,7 +1,6 @@
 patch:
   schema_list:
     - schema: rime_ice
-    - schema: luna_pinyin_simp
   menu/page_size: 9
   key_binder:
     bindings:

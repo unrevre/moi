@@ -3,10 +3,13 @@ azure/
 .config/bash/azure.sh
 {{- end }}
 {{- if (or (not (contains "local" .machine)) (not (contains "arch" .flavour)) (contains "wsl" .flavour)) }}
+.config/fcitx5/
 .config/herbstluftwm/
 .config/kitty/
 .config/picom/
 .config/rofi/
+.local/share/fcitx5/rime/default.custom.yaml
+.local/share/fcitx5/rime/rime_ice.custom.yaml
 .xinitrc
 .Xresources
 {{- end }}

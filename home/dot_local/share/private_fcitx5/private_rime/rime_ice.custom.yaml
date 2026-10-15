@@ -1,0 +1,4 @@
+patch:
+  # show only the schema list (雾凇拼音 / 朙月拼音) in the Ctrl+` menu;
+  # all option switches hidden — features remain active with their defaults
+  switches: []

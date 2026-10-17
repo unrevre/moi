@@ -45,9 +45,6 @@
 .vim/bundle/vim-peekaboo:
   type: git-repo
   url: 'https://github.com/junegunn/vim-peekaboo.git'
-.vim/bundle/vim-pencil:
-  type: git-repo
-  url: 'https://github.com/preservim/vim-pencil.git'
 .vim/bundle/vim-qf:
   type: git-repo
   url: 'https://github.com/romainl/vim-qf.git'
@@ -66,6 +63,3 @@
 .vim/bundle/vim-vinegar:
   type: git-repo
   url: 'https://github.com/unrevre/vim-vinegar.git'
-.vim/bundle/vimwiki:
-  type: git-repo
-  url: 'https://github.com/vimwiki/vimwiki.git'

@@ -13,7 +13,6 @@ execute pathogen#infect()
 " vim-exchange
 " vim-matchup
 " vim-peekaboo
-" vim-pencil
 " vim-qf
 " vim-repeat
 " vim-surround
@@ -21,7 +20,6 @@ execute pathogen#infect()
 " vim-usnip
 " vim-vinegar
 " vimagit
-" vimwiki
 
 " general settings {{{
 filetype plugin indent on
@@ -415,16 +413,6 @@ let g:parrot_agents = {
 let g:parrot_split_size = &columns / 2
 " }}}
 
-" pencil {{{
-let g:pencil#concealcursor = 'nc'
-let g:pencil#textwidth = 79
-
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,text call pencil#init()
-augroup END
-" }}}
-
 " peekaboo {{{
 let g:peekaboo_window = 'vertical botright 40new'
 " }}}
@@ -441,12 +429,5 @@ nmap <leader>l <Plug>(qf_qf_toggle_stay)
 " targets {{{
 let g:targets_aiAI = 'aIAi'
 let g:targets_nl = 'jk'
-" }}}
-
-" vimwiki {{{
-let g:vimwiki_key_mappings = { 'global': 0 }
-let g:vimwiki_list = [{'path': '~/.vimwiki/'}]
-
-nmap <leader>w <Plug>VimwikiIndex
 " }}}
 " }}}

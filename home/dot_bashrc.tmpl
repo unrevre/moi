@@ -43,7 +43,6 @@ export LESS_TERMCAP_se=${__c[-]}
 export LESS_TERMCAP_us=${__c[2]}
 export LESS_TERMCAP_ue=${__c[-]}
 export MOSH_ESCAPE_KEY=$'\x1F'
-export PYENV_ROOT="$HOME/.pyenv"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 {{- if (and (contains "local" .machine) (contains "arch" .flavour) (not (contains "wsl" .flavour))) }}
 export XSECURELOCK_BLANK_DPMS_STATE=on
@@ -55,8 +54,6 @@ export XSECURELOCK_NO_COMPOSITE=1
 
 export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 {{- end }}
-
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
 alias dots='git --git-dir=$HOME/.dots --work-tree=$HOME'
 alias grep='grep --color=auto'
@@ -84,7 +81,6 @@ shopt -s histappend
 
 stty -ixon
 
-eval "$(pyenv init -)"
 eval "$(fzf --bash)"
 
 bind -r '\e\e'
@@ -105,7 +101,6 @@ completions=(
     /usr/share/bash-completion/completions/mosh
     /usr/share/bash-completion/completions/pacman
     /usr/share/bash-completion/completions/pip
-    /usr/share/bash-completion/completions/pyenv
 {{- if contains "conda" .machine }}
     "$HOME/.local/share/bash-completion/completions/conda"
 {{- end }}

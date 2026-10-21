@@ -25,3 +25,7 @@ azure/
 {{- if not (has "gui" .tags) }}
 .config/kitty/
 {{- end }}
+{{- if not (and (has "gui" .tags) (has "fcitx5" .tags)) }}
+.config/fcitx5/
+.local/share/fcitx5/
+{{- end }}

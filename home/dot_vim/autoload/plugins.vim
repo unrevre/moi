@@ -262,5 +262,4 @@ function! plugins#toggle(name)
     let g:matchup_enabled = !state
     return
   endif
-
 endfunction

@@ -87,9 +87,13 @@ hc keybind $Mod-Up      resize up +0.04
 hc keybind $Mod-Right   resize right +0.04
 
 # volume
-hc keybind XF86AudioMute        spawn amixer set Master toggle
-hc keybind XF86AudioRaiseVolume spawn amixer set Master 2+ unmute
-hc keybind XF86AudioLowerVolume spawn amixer set Master 2- unmute
+# sh -c so that the bar is notified only after amixer has finished
+hc keybind XF86AudioMute        spawn sh -c \
+    'amixer -q set Master toggle && herbstclient emit_hook audio'
+hc keybind XF86AudioRaiseVolume spawn sh -c \
+    'amixer -q set Master 5%+ unmute && herbstclient emit_hook audio'
+hc keybind XF86AudioLowerVolume spawn sh -c \
+    'amixer -q set Master 5%- unmute && herbstclient emit_hook audio'
 
 # tags
 tag_names=( {1..9} )

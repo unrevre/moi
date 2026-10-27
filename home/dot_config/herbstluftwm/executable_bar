@@ -21,6 +21,17 @@ uniq_linebuffered() {
     awk '$0 != l { print; l=$0; fflush(); }' "$@"
 }
 
+volume() {
+    device=$(amixer get Master | tail -1)
+
+    echo -n "%{F#f2777a}"
+    if grep -q off <<< "$device"; then
+        echo " - "
+    else
+        awk -F '[][%]' '{ printf "%3s\n", $2 }' <<< "$device"
+    fi
+}
+
 {
     ### Event generator ###
     # based on different input data (mpc, date, hlwm hooks, ...) this generates
@@ -55,29 +66,16 @@ uniq_linebuffered() {
     done > >(uniq_linebuffered) &
     powerpid=$!
 
-    while true; do
-        echo -n "audio %{F#f2777a}"
-        device=$(amixer get Master | tail -1)
-
-        if grep -q off <<< "$device"; then
-            echo " - "
-        else
-            awk '{ print $3 }' <<< "$device"
-        fi
-        sleep 5 || break
-    done > >(uniq_linebuffered) &
-    audiopid=$!
-
     hc --idle
 
-    kill $time $powerpid $audiopid
+    kill $time $powerpid
 } 2> /dev/null | {
     read -ra tags <<< "$(hc tag_status "$monitor")"
 
     # placeholders
     time=$(printf "%16s" "")
     power=$(printf "%4s" "")
-    audio=$(printf "%3s" "")
+    audio=$(volume)
     title=""
 
     while true; do
@@ -139,7 +137,7 @@ uniq_linebuffered() {
                 title=${cmd[*]:2}
                 ;;
             audio)
-                audio=${cmd[*]:1}
+                audio=$(volume)
                 ;;
             power)
                 power=${cmd[*]:1}

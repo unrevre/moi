@@ -55,6 +55,9 @@ volume() {
             echo -n "%{F#99cc99}+"
         elif [ "$capacity" -lt 16 ]; then
             echo -n "%{F#f2777a}"
+            notify-send -e -a "battery" -u critical \
+                -h string:x-dunst-stack-tag:note-battery \
+                "[!] BAT: [$capacity]"
         elif [ "$capacity" -lt 25 ]; then
             echo -n "%{F#f99157}"
         else

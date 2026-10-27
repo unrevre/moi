@@ -31,6 +31,17 @@ volume() {
         awk -F '[][%]' '{ printf "%3s\n", $2 }' <<< "$device"
     fi
 }
+{{- if has "touch" .tags }}
+
+toggle_glass() {
+    pkill -x glass || {
+        hc emit_hook glass start
+        glass
+        hc emit_hook glass stop
+    } &
+}
+
+{{- end }}
 
 {
     ### Event generator ###
@@ -79,7 +90,16 @@ volume() {
     time=$(printf "%16s" "")
     power=$(printf "%4s" "")
     audio=$(volume)
+{{- if has "touch" .tags }}
+    glass=" [ ] "
+{{- end }}
     title=""
+{{- if has "touch" .tags }}
+
+    # glass button is only shown if glass is installed
+    command -v glass > /dev/null \
+        && glass="%{F#6699ff}%{A:toggle_glass:} [+] %{A}"
+{{- end }}
 
     while true; do
         ### Output ###
@@ -113,6 +133,9 @@ volume() {
         echo -n "$separator"
         echo -n "${title//%/%%}"
         echo -n "%{r}"
+{{- if has "touch" .tags }}
+        echo -n "$separator$glass"
+{{- end }}
         echo -n "$separator"
         echo -n "$audio"
         echo -n "$separator"
@@ -139,6 +162,14 @@ volume() {
             focus_changed|window_title_changed)
                 title=${cmd[*]:2}
                 ;;
+{{- if has "touch" .tags }}
+            glass)
+                [ "${cmd[1]}" == "start" ] \
+                    && glass="%{F#f2777a}%{A:toggle_glass:} [X] %{A}"
+                [ "${cmd[1]}" == "stop" ] \
+                    && glass="%{F#6699ff}%{A:toggle_glass:} [+] %{A}"
+                ;;
+{{- end }}
             audio)
                 audio=$(volume)
                 ;;

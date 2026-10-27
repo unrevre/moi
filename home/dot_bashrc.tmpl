@@ -127,6 +127,11 @@ completions=(
 
 # shellcheck source=/dev/null
 for f in "${completions[@]}"; do [[ -r "$f" ]] && . "$f"; done
+{{- if has "x11" .tags }}
+
+# shellcheck disable=SC2016
+bind '"\C-x\C-m": " \C-u \C-a\C-k`clipcat-menu`\e\C-e\C-y\C-a\C-y\ey\C-h\C-e\er\C-h"'
+{{- end }}
 
 ap() {
     if [ -d "$1" ]; then
